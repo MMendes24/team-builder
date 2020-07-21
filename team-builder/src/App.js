@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid'
+import TeamMember from './FormComponents/TeamMember'
+import TeamForm from './FormComponents/TeamForm'
 import './App.css';
 
 const initialTeam = [
@@ -41,22 +43,21 @@ function App() {
 
   const submitForm = () => {
     const newTeamMember = {
-      name: formValues.name,
-      email: formValues.email,
+      name: formValues.name.trim(),
+      email: formValues.email.trim(),
       characterClass: formValues.characterClass,
       role: formValues.role,
-      level: formValues.level,
+      level: formValues.level.trim(),
     }
-    if (!newTeamMember.name || !newTeamMember.email || !newTeamMember.characterClass || !newTeamMember.role || !newTeamMember.level)
-    return
+    if (!newTeamMember.name || !newTeamMember.email || !newTeamMember.role || !newTeamMember.level) return
 
     fakeAxiosPost('pfsrd.com', newTeamMember)
       .then(res => {
-        const teamMemberPFSRD = res.datas
+        const teamMemberPFSRD = res.data
         setTeam([teamMemberPFSRD, ...team])
         setFormValues(initialFormValues)
       })
-      .catch(console.log("Not enough mana to cast this spell!"))
+      .catch(err => console.error(err))
 
   }
 
@@ -67,6 +68,16 @@ function App() {
 
   return (
     <div className="App">
+      <header><h1>The Party</h1></header>
+      <TeamForm values={formValues} update={updateForm} submit={submitForm}
+      />
+      {
+        team.map(teamMember => {
+          return (
+            <TeamMember details={teamMember} />
+          )
+        })
+      }
     </div>
   );
 }
