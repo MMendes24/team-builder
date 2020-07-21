@@ -13,6 +13,23 @@ const initialTeam = [
     role: "Debuffing",
     level: "25",
   },
+  {
+    id: uuid(), 
+    name: "Juan",
+    email: "Juan@Numberjuan.com",
+    characterClass: "Warrior",
+    role: "DPR",
+    level: "51",
+  },
+  {
+    id: uuid(),
+    name: "Joe",
+    email: "Joe@WhereEvenIsAlaska.com",
+    characterClass: "Thief",
+    role: "Support",
+    level: "31",
+  },
+  
 ]
 
 const initialFormValues = {
@@ -74,7 +91,7 @@ function App() {
       {
         team.map(teamMember => {
           return (
-            <TeamMember details={teamMember} />
+            <TeamMember key={teamMember.id} details={teamMember} />
           )
         })
       }

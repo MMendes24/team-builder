@@ -44,7 +44,7 @@ export default function TeamForm(props) {
                     />
                 </label>
                 <label>Class:&nbsp;
-                    <select name="character class" value={values.characterClass} onChange={onChange}>
+                    <select name="characterClass" value={values.characterClass} onChange={onChange}>
                         <option value="">Choose Your Class</option>
                         <option value="Warrior">Warrior</option>
                         <option value="Mage">Mage</option>
