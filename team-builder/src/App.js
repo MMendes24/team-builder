@@ -13,7 +13,7 @@ const initialTeam = [
   },
 ]
 
-const initialFormValue = {
+const initialFormValues = {
   name: "",
   email: "",
   characterClass: "",
@@ -31,7 +31,39 @@ const fakeAxiosPost = (url, { name, email, characterClass, role, level}) => {
 }
 
 function App() {
-  const [ team, setTeam] = useState(initialTeam)
+  const [ team, setTeam] = useState([])
+  const [ formValues, setFormValues ] = useState(initialFormValues)
+
+  const updateForm = (inputName, inputValue) => {
+    const updatedFormValues = {...formValues, [inputName]: inputValue}
+    setFormValues(updatedFormValues)
+  }
+
+  const submitForm = () => {
+    const newTeamMember = {
+      name: formValues.name,
+      email: formValues.email,
+      characterClass: formValues.characterClass,
+      role: formValues.role,
+      level: formValues.level,
+    }
+    if (!newTeamMember.name || !newTeamMember.email || !newTeamMember.characterClass || !newTeamMember.role || !newTeamMember.level)
+    return
+
+    fakeAxiosPost('pfsrd.com', newTeamMember)
+      .then(res => {
+        const teamMemberPFSRD = res.datas
+        setTeam([teamMemberPFSRD, ...team])
+        setFormValues(initialFormValues)
+      })
+      .catch(console.log("Not enough mana to cast this spell!"))
+
+  }
+
+  useEffect(() => {
+    fakeAxiosGet('pfsrd.com')
+      .then(res => setTeam(res.data))
+  }, [])
 
   return (
     <div className="App">
